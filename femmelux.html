@@ -466,6 +466,13 @@
         document.getElementById('vendorForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            console.log('Form submission started...');
+            console.log('EmailJS Config:', {
+                publicKey: EMAILJS_PUBLIC_KEY,
+                serviceId: EMAILJS_SERVICE_ID,
+                templateId: EMAILJS_TEMPLATE_ID
+            });
+            
             const submitBtn = this.querySelector('.submit-btn');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Sending...';
@@ -474,69 +481,88 @@
             try {
                 // Get form data
                 const formData = new FormData(this);
+                console.log('Form data collected');
                 
                 // Prepare attachments
                 const proposal = formData.get('proposal');
                 const priceList = formData.get('priceList');
                 const additionalDocs = formData.getAll('additionalDocs');
 
+                console.log('Files:', {
+                    proposal: proposal ? proposal.name + ' (' + proposal.size + ' bytes)' : 'None',
+                    priceList: priceList ? priceList.name + ' (' + priceList.size + ' bytes)' : 'None'
+                });
+
+                // Check file sizes
+                if (proposal && proposal.size > 500000) {
+                    alert('Warning: Proposal file is larger than 500KB. It may not attach properly. Consider uploading a smaller file.');
+                }
+                if (priceList && priceList.size > 500000) {
+                    alert('Warning: Price list file is larger than 500KB. It may not attach properly. Consider uploading a smaller file.');
+                }
+
                 // Convert files to base64
-                const proposalBase64 = proposal.size > 0 ? await fileToBase64(proposal) : '';
-                const priceListBase64 = priceList.size > 0 ? await fileToBase64(priceList) : '';
+                console.log('Converting files to base64...');
+                const proposalBase64 = proposal && proposal.size > 0 ? await fileToBase64(proposal) : '';
+                const priceListBase64 = priceList && priceList.size > 0 ? await fileToBase64(priceList) : '';
+                console.log('Files converted successfully');
                 
                 // Prepare template parameters
                 const templateParams = {
                     // Company Information
-                    brand_name: formData.get('brandName'),
-                    company_type: formData.get('companyType'),
-                    years_in_business: formData.get('yearsInBusiness'),
-                    product_categories: formData.get('productCategories'),
-                    website: formData.get('website'),
-                    company_description: formData.get('companyDescription'),
+                    brand_name: formData.get('brandName') || 'N/A',
+                    company_type: formData.get('companyType') || 'N/A',
+                    years_in_business: formData.get('yearsInBusiness') || 'N/A',
+                    product_categories: formData.get('productCategories') || 'N/A',
+                    website: formData.get('website') || 'N/A',
+                    company_description: formData.get('companyDescription') || 'N/A',
                     
                     // Primary Contact
-                    contact_name: formData.get('contactName'),
-                    contact_title: formData.get('contactTitle'),
-                    email: formData.get('email'),
-                    phone: formData.get('phone'),
-                    address: formData.get('address'),
+                    contact_name: formData.get('contactName') || 'N/A',
+                    contact_title: formData.get('contactTitle') || 'N/A',
+                    email: formData.get('email') || 'N/A',
+                    phone: formData.get('phone') || 'N/A',
+                    address: formData.get('address') || 'N/A',
                     
                     // Additional Contact
-                    additional_name: formData.get('additionalName'),
-                    additional_email: formData.get('additionalEmail'),
-                    additional_phone: formData.get('additionalPhone'),
+                    additional_name: formData.get('additionalName') || 'N/A',
+                    additional_email: formData.get('additionalEmail') || 'N/A',
+                    additional_phone: formData.get('additionalPhone') || 'N/A',
                     
                     // Business Details
-                    min_order: formData.get('minOrder'),
-                    payment_terms: formData.get('paymentTerms'),
-                    shipping_info: formData.get('shippingInfo'),
-                    certifications: formData.get('certifications'),
+                    min_order: formData.get('minOrder') || 'N/A',
+                    payment_terms: formData.get('paymentTerms') || 'N/A',
+                    shipping_info: formData.get('shippingInfo') || 'N/A',
+                    certifications: formData.get('certifications') || 'N/A',
                     
                     // Additional Info
-                    special_requests: formData.get('specialRequests'),
-                    how_heard: formData.get('howHeard'),
+                    special_requests: formData.get('specialRequests') || 'N/A',
+                    how_heard: formData.get('howHeard') || 'N/A',
                     
                     // File information
-                    proposal_name: proposal.name,
-                    price_list_name: priceList.name,
-                    additional_docs_names: Array.from(additionalDocs).map(f => f.name).join(', '),
+                    proposal_name: proposal ? proposal.name : 'No file uploaded',
+                    price_list_name: priceList ? priceList.name : 'No file uploaded',
+                    additional_docs_names: Array.from(additionalDocs).map(f => f.name).join(', ') || 'None',
                     
-                    // Attachments (base64)
-                    proposal_file: proposalBase64,
-                    price_list_file: priceListBase64,
+                    // Attachments (base64) - only include if under 500KB
+                    proposal_file: (proposal && proposal.size <= 500000) ? proposalBase64 : 'File too large - please request directly',
+                    price_list_file: (priceList && priceList.size <= 500000) ? priceListBase64 : 'File too large - please request directly',
                     
                     // Submission date
                     submission_date: new Date().toLocaleString()
                 };
 
+                console.log('Template parameters prepared:', Object.keys(templateParams));
+
                 // Send email via EmailJS
+                console.log('Sending email via EmailJS...');
                 const response = await emailjs.send(
                     EMAILJS_SERVICE_ID,
                     EMAILJS_TEMPLATE_ID,
                     templateParams
                 );
 
-                console.log('SUCCESS!', response.status, response.text);
+                console.log('✅ SUCCESS! Email sent:', response.status, response.text);
                 
                 // Show success message
                 document.getElementById('successMessage').classList.add('show');
@@ -554,8 +580,25 @@
                 }, 5000);
 
             } catch (error) {
-                console.error('FAILED...', error);
-                alert('There was an error submitting your information. Please try again or contact us directly.');
+                console.error('❌ SUBMISSION FAILED');
+                console.error('Error details:', error);
+                console.error('Error message:', error.message || error.text);
+                
+                let errorMessage = 'There was an error submitting your information.\n\n';
+                
+                if (error.text) {
+                    errorMessage += 'Error: ' + error.text + '\n\n';
+                }
+                
+                if (error.text && error.text.includes('Template')) {
+                    errorMessage += 'This appears to be a template configuration issue. Please check your EmailJS template settings.';
+                } else if (error.text && error.text.includes('Service')) {
+                    errorMessage += 'This appears to be a service configuration issue. Please check your EmailJS service settings.';
+                } else {
+                    errorMessage += 'Please try again or contact us directly.';
+                }
+                
+                alert(errorMessage);
             } finally {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
