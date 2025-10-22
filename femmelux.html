@@ -3,324 +3,584 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendor Partnership Application - Femme Lux</title>
-    <meta name="description" content="Apply to become a vendor partner with Femme Lux Beauty - Clean beauty and luxury products retailer in Hobbs, New Mexico">
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Vendor Registration - Beauty Supply Show</title>
     <style>
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #8b6f9e;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .form-section h2 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            background: #e8eaf6;
+            border-color: #764ba2;
+        }
+
+        .file-upload-label i {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .file-info {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-purple-50 via-white to-purple-50">
-    <div class="min-h-screen py-12 px-4">
-        <div class="max-w-4xl mx-auto">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-t-2xl p-8 shadow-lg">
-                <h1 class="text-4xl font-bold mb-2 tracking-wide">Femme Lux</h1>
-                <p class="text-xl text-purple-100">Vendor Partnership Application</p>
-                <p class="text-sm text-purple-200 mt-2">Join our curated collection of clean beauty brands</p>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Vendor Registration</h1>
+            <p>Beauty Supply Show - Connect With Us</p>
+        </div>
+
+        <div class="form-container">
+            <div id="successMessage" class="success-message">
+                <strong>Success!</strong> Your information has been submitted. We'll be in touch soon!
             </div>
 
-            <!-- Success Message (Hidden by default) -->
-            <div id="successMessage" class="bg-white rounded-b-2xl shadow-lg p-12 text-center" style="display: none;">
-                <div class="text-6xl mb-4">✓</div>
-                <h2 class="text-3xl font-bold text-purple-600 mb-4">Application Submitted Successfully!</h2>
-                <p class="text-gray-600 text-lg mb-4">Thank you for your interest in partnering with Femme Lux.</p>
-                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6 max-w-2xl mx-auto">
-                    <p class="text-gray-700 font-semibold mb-2">📧 What's Next?</p>
-                    <p class="text-gray-600 mb-2">Your application has been sent to our team at:</p>
-                    <p class="text-purple-600 font-bold text-xl mb-4">orders@femmeluxbeauty.com</p>
-                    <p class="text-gray-500 text-sm">We will review your application and contact you within 3-5 business days.</p>
-                </div>
-            </div>
-
-            <!-- Application Form -->
-            <div id="applicationForm" class="bg-white rounded-b-2xl shadow-lg">
+            <form id="vendorForm">
                 <!-- Company Information -->
-                <div class="p-8 border-b border-gray-200">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Company Information</h2>
+                <div class="form-section">
+                    <h2>Company Information</h2>
                     
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Company Name <span class="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                id="companyName"
-                                placeholder="Enter your company name"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                required
-                            />
+                    <div class="form-group">
+                        <label for="brandName">Brand/Company Name <span class="required">*</span></label>
+                        <input type="text" id="brandName" name="brandName" required>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="companyType">Business Type <span class="required">*</span></label>
+                            <select id="companyType" name="companyType" required>
+                                <option value="">Select...</option>
+                                <option value="Manufacturer">Manufacturer</option>
+                                <option value="Distributor">Distributor</option>
+                                <option value="Wholesaler">Wholesaler</option>
+                                <option value="Brand Owner">Brand Owner</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Website
-                            </label>
-                            <input
-                                type="url"
-                                id="website"
-                                placeholder="https://yourwebsite.com"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                            />
+                        <div class="form-group">
+                            <label for="yearsInBusiness">Years in Business</label>
+                            <input type="text" id="yearsInBusiness" name="yearsInBusiness">
                         </div>
+                    </div>
 
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Contact Name <span class="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                id="contactName"
-                                placeholder="Your full name"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                required
-                            />
-                        </div>
+                    <div class="form-group">
+                        <label for="productCategories">Product Categories <span class="required">*</span></label>
+                        <input type="text" id="productCategories" name="productCategories" placeholder="e.g., Hair Care, Skincare, Makeup, Tools" required>
+                    </div>
 
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Email <span class="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="email"
-                                id="email"
-                                placeholder="your@email.com"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                required
-                            />
-                        </div>
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input type="url" id="website" name="website" placeholder="https://">
+                    </div>
 
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Phone Number
-                            </label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                placeholder="+1 (555) 123-4567"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                            />
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Business Address
-                            </label>
-                            <input
-                                type="text"
-                                id="address"
-                                placeholder="City, State, Country"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                            />
-                        </div>
+                    <div class="form-group">
+                        <label for="companyDescription">Company Description</label>
+                        <textarea id="companyDescription" name="companyDescription" placeholder="Tell us about your company and products..."></textarea>
                     </div>
                 </div>
 
-                <!-- Business Proposal -->
-                <div class="p-8 border-b border-gray-200 bg-purple-50">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Business Proposal</h2>
-                    <p class="text-gray-600 mb-4">
-                        Tell us about your brand, products, and why you'd like to partner with Femme Lux. 
-                        Include information about your brand values, product categories, and what makes your products unique.
-                    </p>
+                <!-- Contact Information -->
+                <div class="form-section">
+                    <h2>Primary Contact Information</h2>
                     
-                    <textarea
-                        id="businessProposal"
-                        rows="10"
-                        placeholder="Example:&#10;&#10;About Our Brand:&#10;We are a clean beauty brand specializing in organic skincare products...&#10;&#10;Our Product Line:&#10;- Facial serums&#10;- Moisturizers&#10;- Cleansers&#10;&#10;Why Partner with Us:&#10;Our products are cruelty-free, vegan, and made with sustainable ingredients..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        required
-                    ></textarea>
-                    
-                    <p class="text-sm text-gray-500 mt-2">
-                        <span class="text-red-500">*</span> Required field
-                    </p>
-                </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="contactName">Contact Name <span class="required">*</span></label>
+                            <input type="text" id="contactName" name="contactName" required>
+                        </div>
 
-                <!-- Price List -->
-                <div class="p-8 border-b border-gray-200">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Price List</h2>
-                    <p class="text-gray-600 mb-4">
-                        Please provide your wholesale price list for all products you wish to offer. Include SKU numbers, 
-                        product names, wholesale prices, and retail prices if available.
-                    </p>
-                    
-                    <textarea
-                        id="priceList"
-                        rows="12"
-                        placeholder="Example format:&#10;&#10;SKU: FML-001&#10;Product: Radiant Glow Serum 30ml&#10;Wholesale Price: $25.00&#10;Retail Price: $49.99&#10;Category: Skincare&#10;&#10;SKU: FML-002&#10;Product: Hydrating Face Cream 50ml&#10;Wholesale Price: $30.00&#10;Retail Price: $59.99&#10;Category: Skincare&#10;&#10;Or paste a link to your online catalog..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
-                        required
-                    ></textarea>
-                    
-                    <p class="text-sm text-gray-500 mt-2">
-                        <span class="text-red-500">*</span> Required field
-                    </p>
-                    
-                    <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <p class="text-sm text-blue-800">
-                            💡 <strong>Tip:</strong> You can also paste a link to your online catalog, price sheet, or attach a document 
-                            by including a download link (Google Drive, Dropbox, etc.)
-                        </p>
+                        <div class="form-group">
+                            <label for="contactTitle">Title/Position</label>
+                            <input type="text" id="contactTitle" name="contactTitle" placeholder="e.g., Sales Manager">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Business Address</label>
+                        <textarea id="address" name="address" rows="3" placeholder="Street Address, City, State, ZIP Code, Country"></textarea>
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="p-8">
-                    <button
-                        type="button"
-                        id="submitButton"
-                        onclick="handleSubmit()"
-                        class="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-4 rounded-lg hover:from-purple-700 hover:to-purple-900 transition-all font-bold text-lg shadow-lg"
-                    >
-                        Submit Partnership Application
-                    </button>
+                <!-- Additional Contact -->
+                <div class="form-section">
+                    <h2>Additional Contact (Optional)</h2>
                     
-                    <div class="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <p class="text-sm text-gray-600 text-center mb-2">
-                            By submitting this application, you agree to provide authentic, quality products and 
-                            authorize Femme Lux to contact you regarding this partnership opportunity.
-                        </p>
-                        <p class="text-xs text-gray-500 text-center">
-                            Your application will be sent to: <span class="font-semibold">orders@femmeluxbeauty.com</span>
-                        </p>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="additionalName">Name</label>
+                            <input type="text" id="additionalName" name="additionalName">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additionalEmail">Email</label>
+                            <input type="email" id="additionalEmail" name="additionalEmail">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalPhone">Phone</label>
+                        <input type="tel" id="additionalPhone" name="additionalPhone">
                     </div>
                 </div>
-            </div>
 
-            <!-- Footer -->
-            <div class="mt-8 text-center text-gray-600">
-                <p class="mb-2 text-lg">Questions about the partnership program?</p>
-                <p class="font-semibold text-purple-600 text-xl mb-2">orders@femmeluxbeauty.com</p>
-                <p class="font-semibold text-gray-700">+1 (313) 979-4449</p>
-                <p class="text-sm mt-4 text-gray-500">femmeluxbeauty.com</p>
-            </div>
+                <!-- Business Details -->
+                <div class="form-section">
+                    <h2>Business Details</h2>
+                    
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="minOrder">Minimum Order Quantity/Value</label>
+                            <input type="text" id="minOrder" name="minOrder" placeholder="e.g., $500 or 100 units">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="paymentTerms">Payment Terms</label>
+                            <input type="text" id="paymentTerms" name="paymentTerms" placeholder="e.g., Net 30, COD">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shippingInfo">Shipping Information</label>
+                        <textarea id="shippingInfo" name="shippingInfo" placeholder="Shipping methods, delivery times, regions served..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="certifications">Certifications/Licenses</label>
+                        <input type="text" id="certifications" name="certifications" placeholder="e.g., FDA, Organic, Cruelty-Free">
+                    </div>
+                </div>
+
+                <!-- File Uploads -->
+                <div class="form-section">
+                    <h2>Documents</h2>
+                    
+                    <div class="form-group">
+                        <label>Business Proposal <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="proposal" name="proposal" accept=".pdf,.doc,.docx" required onchange="updateFileName('proposal')">
+                            <label for="proposal" class="file-upload-label">
+                                <div>📄</div>
+                                <div><strong>Choose File</strong> or drag here</div>
+                                <div class="file-info">PDF, DOC, DOCX (Max 10MB)</div>
+                            </label>
+                        </div>
+                        <div id="proposalName" class="file-name"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price List (Excel) <span class="required">*</span></label>
+                        <div class="file-upload">
+                            <input type="file" id="priceList" name="priceList" accept=".xlsx,.xls,.csv" required onchange="updateFileName('priceList')">
+                            <label for="priceList" class="file-upload-label">
+                                <div>📊</div>
+                                <div><strong>Choose File</strong> or drag here</div>
+                                <div class="file-info">XLSX, XLS, CSV (Max 10MB)</div>
+                            </label>
+                        </div>
+                        <div id="priceListName" class="file-name"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Additional Documents (Optional)</label>
+                        <div class="file-upload">
+                            <input type="file" id="additionalDocs" name="additionalDocs" accept=".pdf,.doc,.docx,.xlsx,.xls,.jpg,.jpeg,.png" multiple onchange="updateFileName('additionalDocs')">
+                            <label for="additionalDocs" class="file-upload-label">
+                                <div>📎</div>
+                                <div><strong>Choose Files</strong> or drag here</div>
+                                <div class="file-info">Multiple files allowed (Max 10MB each)</div>
+                            </label>
+                        </div>
+                        <div id="additionalDocsName" class="file-name"></div>
+                    </div>
+                </div>
+
+                <!-- Additional Notes -->
+                <div class="form-section">
+                    <h2>Additional Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="specialRequests">Special Requests or Questions</label>
+                        <textarea id="specialRequests" name="specialRequests" placeholder="Any specific requirements, questions, or information you'd like to share..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="howHeard">How did you hear about this show?</label>
+                        <select id="howHeard" name="howHeard">
+                            <option value="">Select...</option>
+                            <option value="Referral">Referral</option>
+                            <option value="Social Media">Social Media</option>
+                            <option value="Email">Email</option>
+                            <option value="Website">Website</option>
+                            <option value="Trade Publication">Trade Publication</option>
+                            <option value="Previous Show">Previous Show</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Vendor Information</button>
+            </form>
         </div>
     </div>
 
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
     <script>
+        // ========================================
+        // EMAILJS CONFIGURATION
+        // ========================================
+        const EMAILJS_PUBLIC_KEY = 'ws92hJIBe5p4oN5Tz';
+        const EMAILJS_SERVICE_ID = 'service_pvq93gl';
+        const EMAILJS_TEMPLATE_ID = 'template_i6vyjkc';
+        
         // Initialize EmailJS
-        emailjs.init('ws92hJIBe5p4oN5Tz');
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        // ========================================
 
-        async function handleSubmit() {
-            // Get form values
-            const companyName = document.getElementById('companyName').value;
-            const website = document.getElementById('website').value;
-            const contactName = document.getElementById('contactName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const businessProposal = document.getElementById('businessProposal').value;
-            const priceList = document.getElementById('priceList').value;
-
-            // Validation
-            if (!companyName || !contactName || !email) {
-                alert('Please fill in all required fields: Company Name, Contact Name, and Email');
-                return;
+        function updateFileName(inputId) {
+            const input = document.getElementById(inputId);
+            const fileNameDiv = document.getElementById(inputId + 'Name');
+            
+            if (input.files.length > 0) {
+                if (input.files.length === 1) {
+                    fileNameDiv.textContent = '✓ ' + input.files[0].name;
+                    fileNameDiv.style.color = '#28a745';
+                } else {
+                    fileNameDiv.textContent = '✓ ' + input.files.length + ' files selected';
+                    fileNameDiv.style.color = '#28a745';
+                }
+            } else {
+                fileNameDiv.textContent = '';
             }
+        }
 
-            if (!businessProposal) {
-                alert('Please provide your business proposal');
-                return;
-            }
+        // Convert file to base64 for EmailJS attachment
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
 
-            if (!priceList) {
-                alert('Please provide your price list');
-                return;
-            }
-
-            // Disable button and show loading
-            const submitButton = document.getElementById('submitButton');
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner"></span> Sending Application...';
-
-            // Prepare email content
-            const emailContent = `
-NEW VENDOR PARTNERSHIP APPLICATION - FEMME LUX
-=============================================
-
-COMPANY INFORMATION:
--------------------
-Company Name: ${companyName}
-Website: ${website}
-Contact Name: ${contactName}
-Email: ${email}
-Phone: ${phone}
-Address: ${address}
-
-BUSINESS PROPOSAL:
------------------
-${businessProposal}
-
-PRICE LIST:
-----------
-${priceList}
-
-Submission Date: ${new Date().toLocaleString()}
-`;
-
-            const templateParams = {
-                to_email: 'orders@femmeluxbeauty.com',
-                from_name: companyName,
-                from_email: email,
-                subject: `New Vendor Application - ${companyName}`,
-                message: emailContent
-            };
+        document.getElementById('vendorForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
 
             try {
+                // Get form data
+                const formData = new FormData(this);
+                
+                // Prepare attachments
+                const proposal = formData.get('proposal');
+                const priceList = formData.get('priceList');
+                const additionalDocs = formData.getAll('additionalDocs');
+
+                // Convert files to base64
+                const proposalBase64 = proposal.size > 0 ? await fileToBase64(proposal) : '';
+                const priceListBase64 = priceList.size > 0 ? await fileToBase64(priceList) : '';
+                
+                // Prepare template parameters
+                const templateParams = {
+                    // Company Information
+                    brand_name: formData.get('brandName'),
+                    company_type: formData.get('companyType'),
+                    years_in_business: formData.get('yearsInBusiness'),
+                    product_categories: formData.get('productCategories'),
+                    website: formData.get('website'),
+                    company_description: formData.get('companyDescription'),
+                    
+                    // Primary Contact
+                    contact_name: formData.get('contactName'),
+                    contact_title: formData.get('contactTitle'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    address: formData.get('address'),
+                    
+                    // Additional Contact
+                    additional_name: formData.get('additionalName'),
+                    additional_email: formData.get('additionalEmail'),
+                    additional_phone: formData.get('additionalPhone'),
+                    
+                    // Business Details
+                    min_order: formData.get('minOrder'),
+                    payment_terms: formData.get('paymentTerms'),
+                    shipping_info: formData.get('shippingInfo'),
+                    certifications: formData.get('certifications'),
+                    
+                    // Additional Info
+                    special_requests: formData.get('specialRequests'),
+                    how_heard: formData.get('howHeard'),
+                    
+                    // File information
+                    proposal_name: proposal.name,
+                    price_list_name: priceList.name,
+                    additional_docs_names: Array.from(additionalDocs).map(f => f.name).join(', '),
+                    
+                    // Attachments (base64)
+                    proposal_file: proposalBase64,
+                    price_list_file: priceListBase64,
+                    
+                    // Submission date
+                    submission_date: new Date().toLocaleString()
+                };
+
+                // Send email via EmailJS
                 const response = await emailjs.send(
-                    'service_pvq93gl',
-                    'template_i6vyjkc',
+                    EMAILJS_SERVICE_ID,
+                    EMAILJS_TEMPLATE_ID,
                     templateParams
                 );
 
+                console.log('SUCCESS!', response.status, response.text);
+                
                 // Show success message
-                document.getElementById('applicationForm').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'block';
-
-                // Reset form after 5 seconds
+                document.getElementById('successMessage').classList.add('show');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Reset form
+                this.reset();
+                document.querySelectorAll('.file-name').forEach(el => el.textContent = '');
+                
+                // Hide success message after 5 seconds
                 setTimeout(() => {
-                    document.getElementById('applicationForm').style.display = 'block';
-                    document.getElementById('successMessage').style.display = 'none';
-                    
-                    // Clear form
-                    document.getElementById('companyName').value = '';
-                    document.getElementById('website').value = '';
-                    document.getElementById('contactName').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('phone').value = '';
-                    document.getElementById('address').value = '';
-                    document.getElementById('businessProposal').value = '';
-                    document.getElementById('priceList').value = '';
-                    
-                    // Re-enable button
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = 'Submit Partnership Application';
+                    document.getElementById('successMessage').classList.remove('show');
                 }, 5000);
 
             } catch (error) {
-                console.error('Error:', error);
-                alert('There was an error submitting your application. Please try again or contact us directly at orders@femmeluxbeauty.com');
-                
-                // Re-enable button
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Submit Partnership Application';
+                console.error('FAILED...', error);
+                alert('There was an error submitting your information. Please try again or contact us directly.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
             }
-        }
+        });
+
+        // Drag and drop functionality
+        document.querySelectorAll('.file-upload-label').forEach(label => {
+            label.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                label.style.background = '#e8eaf6';
+            });
+
+            label.addEventListener('dragleave', () => {
+                label.style.background = '#f8f9fa';
+            });
+
+            label.addEventListener('drop', (e) => {
+                e.preventDefault();
+                label.style.background = '#f8f9fa';
+                const input = label.previousElementSibling;
+                input.files = e.dataTransfer.files;
+                updateFileName(input.id);
+            });
+        });
     </script>
 </body>
 </html>
